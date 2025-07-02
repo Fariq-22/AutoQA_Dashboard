@@ -1,0 +1,83 @@
+/* Full-screen wrapper */
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background: #eef2f7;
+  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+}
+
+/* Card container */
+.login-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 360px;
+  padding: 40px 30px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Logo wrapper to center image */
+.logo-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  max-width: 120px;
+  height: auto;
+}
+
+/* Heading */
+.login-card h2 {
+  margin: 0 0 25px;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+/* Flash messages */
+.flashes {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+.flash {
+  font-size: 0.9rem;
+  color: #d9534f;
+}
+
+/* Form fields */
+.login-form input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  border: 1px solid #ccd0d5;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Submit button */
+.login-form button {
+  width: 100%;
+  padding: 14px 0;
+  background: linear-gradient(45deg, #42a5f5, #478ed1);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}

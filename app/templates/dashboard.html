@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AUTOQA Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="dashboard-wrapper">
+
+    <!-- 1. Title -->
+    <header class="dashboard-header">
+      <h1>AUTOQA DASHBOARD</h1>
+    </header>
+
+    <!-- 2. Bar Chart -->
+    <section class="chart-section">
+      <canvas id="ticketsChart"></canvas>
+    </section>
+
+    <!-- 3. Three Buttons -->
+ <nav class="action-buttons">
+      <a href="{{ url_for('main.explore_ticket') }}" class="btn">Explore Ticket</a>
+      <a href="{{ url_for('main.explore_client') }}" class="btn">Explore Client</a>
+      <a href="#" class="btn">Explore AutoQA</a>
+    </nav>
+  </div>
+
+<script>
+(function() {
+  const labels = {{ labels | tojson | safe }};
+  const total = {{ total | tojson | safe }};
+  const complete = {{ complete | tojson | safe }};
+  const processing = {{ processing | tojson | safe }};
+  const failed = {{ failed | tojson | safe }};
+
+  const ctx = document.getElementById('ticketsChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Total',
+          data: total,
+          backgroundColor: '#42a5f5'
+        },
+        {
+          label: 'Complete',
+          data: complete,
+          backgroundColor: '#66bb6a'
+        },
+        {
+          label: 'Processing',
+          data: processing,
+          backgroundColor: '#ffa726'
+        },
+        {
+          label: 'Failed',
+          data: failed,
+          backgroundColor: '#ef5350'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {
+        duration: 800,
+        easing: 'easeOutQuart'
+      },
+      scales: {
+        x: {
+          stacked: true,
+          grid: { display: false },
+          ticks: { font: { size: 14 } }
+        },
+        y: {
+          stacked: false,
+          beginAtZero: true,
+          grid: { display: false },
+          ticks: { stepSize: 1, font: { size: 14 } }
+        }
+      },
+      plugins: {
+        tooltip: {
+          mode: 'index',
+          intersect: false,
+          titleFont: { size: 16 },
+          bodyFont: { size: 14 }
+        },
+        legend: {
+          position: 'top',
+          labels: {
+            font: { size: 14 }
+          }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

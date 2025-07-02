@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Explore Ticket</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="explore-container">
+    <!-- Page Title -->
+    <header class="explore-header">
+      <h1>Explore Ticket</h1>
+    </header>
+
+    <!-- Search Form -->
+    <form method="POST" action="{{ url_for('main.explore_ticket') }}" class="search-form">
+      <input
+        type="text"
+        name="ticket_id"
+        placeholder="Enter Ticket ID…"
+        value="{{ ticket_id }}"
+        class="search-input"
+        required
+      >
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Results -->
+    {% if results %}
+      <div class="results-scroll">
+        {% for doc in results %}
+          <div class="ticket-card">
+
+            <!-- Metadata -->
+            <div class="ticket-meta">
+              <strong>Client ID:</strong> {{ doc.client_id }} |
+              <strong>Type:</strong> {{ doc.ticket_type }} |
+              <strong>Customer:</strong> {{ doc.customer_name or 'N/A' }} |
+              <strong>Status:</strong> {{ doc.auto_qa_status or 'N/A' }}
+            </div>
+
+            <!-- Timestamps -->
+            <div class="ticket-timestamps">
+              <div><small>Created: {{ doc.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</small></div>
+              <div><small>Updated: {{ doc.updated_at.strftime('%Y-%m-%d %H:%M:%S') }}</small></div>
+            </div>
+
+            <!-- Conversation Content -->
+            <div class="messages-list">
+              {% for msg in doc.conversation_content %}
+                <div class="message-item">
+                  <span class="role">{{ msg.role }}:</span>
+                  <span class="text">{{ msg.text_content }}</span>
+                </div>
+              {% endfor %}
+            </div>
+
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
