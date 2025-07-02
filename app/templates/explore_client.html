@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Explore Client</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="explore-container">
+
+    <!-- Title -->
+    <h1 class="page-title">Explore Client</h1>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button data-tab="bar"    class="tab-btn {% if selected_tab=='bar' %}active{% endif %}">Last 7 Days</button>
+      <button data-tab="single" class="tab-btn {% if selected_tab=='single' %}active{% endif %}">Single-Day Pie</button>
+      <button data-tab="range"  class="tab-btn {% if selected_tab=='range' %}active{% endif %}">Range Pie</button>
+    </div>
+
+    <!-- 1) Bar Plot -->
+    <section class="tab-content" id="bar" {% if selected_tab!='bar' %}style="display:none"{% endif %}>
+      <form method="POST">
+        <input type="hidden" name="mode" value="bar">
+        <input type="text" name="client_id_bar" placeholder="Client ID" required value="{{ client_id or '' }}">
+        <button type="submit">Show 7-Day Status</button>
+      </form>
+      <div class="chart-box">
+        <canvas id="barChart"></canvas>
+      </div>
+    </section>
+
+    <!-- 2) Single-Day Pie -->
+    <section class="tab-content" id="single" {% if selected_tab!='single' %}style="display:none"{% endif %}>
+      <form method="POST">
+        <input type="hidden" name="mode" value="single">
+        <input type="text" name="client_id_single" placeholder="Client ID" required value="{{ client_id or '' }}">
+        <input type="date" name="date_single" required>
+        <button type="submit">Show Pie</button>
+      </form>
+      <div class="chart-box">
+        <canvas id="pieChartSingle"></canvas>
+      </div>
+    </section>
+
+    <!-- 3) Range-Pie -->
+    <section class="tab-content" id="range" {% if selected_tab!='range' %}style="display:none"{% endif %}>
+      <form method="POST">
+        <input type="hidden" name="mode" value="range">
+        <input type="text" name="client_id_range" placeholder="Client ID" required value="{{ client_id or '' }}">
+        <input type="date" name="start_date" required>
+        <input type="date" name="end_date" required>
+        <button type="submit">Show Pie</button>
+      </form>
+      <div class="chart-box">
+        <canvas id="pieChartRange"></canvas>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(sec=>sec.style.display='none');
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).style.display='block';
+    });
+  });
+
+  // Chart initializations
+  (function(){
+    // Bar chart: always initialize with all three datasets
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: {{ labels|tojson|safe }},
+        datasets: [
+          {
+            label: 'Complete',
+            data: {{ bar_data.complete|tojson|safe }},
+            backgroundColor: '#66bb6a'
+          },
+          {
+            label: 'Processing',
+            data: {{ bar_data.processing|tojson|safe }},
+            backgroundColor: '#ffa726'
+          },
+          {
+            label: 'Failed',
+            data: {{ bar_data.failed|tojson|safe }},
+            backgroundColor: '#ef5350'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top' },
+          tooltip: { mode: 'index', intersect: false }
+        },
+        scales: {
+          x: {
+            grid: { display: false }
+          },
+          y: {
+            beginAtZero: true,
+            grid: { display: false },
+            ticks: { stepSize: 1 }
+          }
+        }
+      }
+    });
+
+    // Single-day Pie
+    {% if pie_data_single %}
+    new Chart(document.getElementById('pieChartSingle'), {
+      type:'pie',
+      data:{
+        labels:['Complete','Processing','Failed'],
+        datasets:[{
+          data:[
+            {{ pie_data_single.complete }},
+            {{ pie_data_single.processing }},
+            {{ pie_data_single.failed }}
+          ],
+          backgroundColor:['#66bb6a','#ffa726','#ef5350']
+        }]
+      },
+      options:{ responsive:true }
+    });
+    {% endif %}
+
+    // Range Pie
+    {% if pie_data_range %}
+    new Chart(document.getElementById('pieChartRange'), {
+      type:'pie',
+      data:{
+        labels:['Complete','Processing','Failed'],
+        datasets:[{
+          data:[
+            {{ pie_data_range.complete }},
+            {{ pie_data_range.processing }},
+            {{ pie_data_range.failed }}
+          ],
+          backgroundColor:['#66bb6a','#ffa726','#ef5350']
+        }]
+      },
+      options:{ responsive:true }
+    });
+    {% endif %}
+  })();
+  </script>
+</body>
+</html>

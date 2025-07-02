@@ -1,0 +1,46 @@
+[{
+  "_id": {
+    "$oid": "6620eb...."
+  },
+  "client_id": "84..",
+  "ticket_id": "6713...",
+  "ticket_type": "F",
+  "assignee_id": 19,
+  "customer_name": "kad",
+  "folder_id": 71,
+  "conversation_content": [
+    {
+      "id": "m_Nc98riXsLpCKKDoPiIQG96h9_PpMndh5MaEpoDrqHbdGAqIf9e3858W9GEyhhkl7DiJVfxB0H8CrPaAytmZGQg",
+      "role": "user",
+      "text_content": "Hello, I recently purchased the [product name] from your store and I would like to share some feedback with you.",
+      "timestamp": "2024-04-17T17:48:07"
+    },
+    {
+      "id": "m_Eqj8kSpVRbXmGrLfqFPQUqh9_PpMndh5MaEpoDrqHbeC7FHylH36sqPPj68glMHNJcajb0FiYFvhX6orTh-92A",
+      "role": "agent",
+      "text_content": "Thank you for your feedback. We appreciate hearing from our customers. Can you please share what you liked about the product?",
+      "timestamp": "2024-04-17T17:48:25"
+    },
+    {
+      "id": "m_T34mTjz5-ktWFWI01bMwsqh9_PpMndh5MaEpoDrqHbeTr1ucIHxN7gS4xAeMQCi3cztJj9PtBTf1H_Vc-aZRIg",
+      "role": "user",
+      "text_content": "I really liked the overall design of the product. It's very sleek and modern. I also found it to be very easy to use.",
+      "timestamp": "2024-04-17T17:48:31"
+    }
+    
+  ],
+  "request_status": "success",
+  "request_status_code": 200,
+  "detail": "'weight'",
+  "auto_qa_status": "failed",
+  "auto_qa_result": null,
+  "auto_qa_score": null,
+  "usage_count": 0,
+  "usage": [],
+  "created_at": {
+    "$date": "2024-04-18T09:45:02.140Z"
+  },
+  "updated_at": {
+    "$date": "2024-04-18T09:45:54.920Z"
+  }
+}]
