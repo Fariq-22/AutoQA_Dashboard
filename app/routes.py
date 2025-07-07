@@ -40,7 +40,7 @@ def dashboard():
         start = datetime.combine(d, datetime.min.time())
         end   = datetime.combine(d, datetime.max.time())
 
-        query_range = { "created_at": { "$gte": start, "$lte": end } }
+        query_range = { "updated_at": { "$gte": start, "$lte": end } }
 
         total = db["auto_qa_results"].count_documents(query_range)
         complete = db["auto_qa_results"].count_documents({ **query_range, "auto_qa_status": "complete" })
@@ -108,7 +108,7 @@ def explore_client():
         for d in dates:
             start = datetime.combine(d, datetime.min.time())
             end   = datetime.combine(d, datetime.max.time())
-            base_q = {"created_at": {"$gte": start, "$lte": end}, "client_id": client_id}
+            base_q = {"updated_at": {"$gte": start, "$lte": end}, "client_id": client_id}
 
             bar_data["complete"].append( db["auto_qa_results"].count_documents({**base_q, "auto_qa_status": "complete"}) )
             bar_data["processing"].append( db["auto_qa_results"].count_documents({**base_q, "auto_qa_status": "processing"}) )
@@ -122,7 +122,7 @@ def explore_client():
                 d0 = datetime.strptime(date_str, "%Y-%m-%d").date()
                 s = datetime.combine(d0, datetime.min.time())
                 e = datetime.combine(d0, datetime.max.time())
-                base_q = {"created_at": {"$gte": s, "$lte": e}, "client_id": client_id}
+                base_q = {"updated_at": {"$gte": s, "$lte": e}, "client_id": client_id}
                 pie_data_single = {
                     "complete":   db["auto_qa_results"].count_documents({**base_q, "auto_qa_status": "complete"}),
                     "processing": db["auto_qa_results"].count_documents({**base_q, "auto_qa_status": "processing"}),
@@ -141,7 +141,7 @@ def explore_client():
                 d2 = datetime.strptime(end_str,   "%Y-%m-%d").date()
                 s = datetime.combine(min(d1, d2), datetime.min.time())
                 e = datetime.combine(max(d1, d2), datetime.max.time())
-                base_q = {"created_at": {"$gte": s, "$lte": e}, "client_id": client_id}
+                base_q = {"updated_at": {"$gte": s, "$lte": e}, "client_id": client_id}
                 pie_data_range = {
                     "complete":   db["auto_qa_results"].count_documents({**base_q, "auto_qa_status": "complete"}),
                     "processing": db["auto_qa_results"].count_documents({**base_q, "auto_qa_status": "processing"}),
